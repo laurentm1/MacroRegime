@@ -252,10 +252,22 @@ pip install -r requirements.txt
 
 Get a free key at https://fred.stlouisfed.org/docs/api/api_key.html
 
-Set it in both scripts:
-```python
-FRED_API_KEY = 'your_key_here'
+Set it as an environment variable (recommended):
+```bash
+export FRED_API_KEY=your_key_here
 ```
+
+Or add it to a `.env` file:
+```
+FRED_API_KEY=your_key_here
+```
+
+The code reads it automatically:
+```python
+FRED_API_KEY = os.environ.get('FRED_API_KEY')
+```
+
+Never hardcode the key directly in source files or commit it to version control.
 
 ### Run the Regime Classifier
 

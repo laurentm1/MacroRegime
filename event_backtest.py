@@ -1,3 +1,4 @@
+import os
 """
 Event Strategy Backtest — FRED Proxy Surprise
 ==============================================
@@ -35,7 +36,7 @@ from fredapi import Fred
 import warnings
 warnings.filterwarnings('ignore')
 
-FRED_API_KEY = 'b1116b7ae7351cdf8018805fbc612ec3'
+FRED_API_KEY = os.environ.get('FRED_API_KEY', 'b1116b7ae7351cdf8018805fbc612ec3')
 REGIME_CSV   = '/home/user/workspace/macro_regime/regime_history.csv'
 OUTPUT_DIR   = '/home/user/workspace/macro_regime/'
 

@@ -1,3 +1,4 @@
+import os
 """
 Macro Regime — Visualisation
 Generates a publication-quality chart of regime history 2000–today
@@ -16,7 +17,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ── Config ────────────────────────────────────────────────────────────────────
-FRED_API_KEY = 'b1116b7ae7351cdf8018805fbc612ec3'
+FRED_API_KEY = os.environ.get('FRED_API_KEY', 'b1116b7ae7351cdf8018805fbc612ec3')
 CSV_PATH     = '/home/user/workspace/macro_regime/regime_history.csv'
 OUTPUT_PATH  = '/home/user/workspace/macro_regime/regime_chart.png'
 

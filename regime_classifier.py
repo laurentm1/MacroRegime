@@ -1,3 +1,4 @@
+import os
 """
 Macro Regime Classifier
 =======================
@@ -25,7 +26,7 @@ from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 
-FRED_API_KEY = 'b1116b7ae7351cdf8018805fbc612ec3'
+FRED_API_KEY = os.environ.get('FRED_API_KEY', 'b1116b7ae7351cdf8018805fbc612ec3')
 
 # ── FRED Series ──────────────────────────────────────────────────────────────
 
