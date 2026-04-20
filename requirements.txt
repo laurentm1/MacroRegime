@@ -3,3 +3,6 @@ numpy>=1.24.0
 matplotlib>=3.7.0
 fredapi>=0.5.1
 requests>=2.31.0
+dash>=2.18.0
+dash-bootstrap-components>=1.5.0
+plotly>=5.20.0
