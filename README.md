@@ -4,6 +4,63 @@ A systematic macro regime classifier and event-driven trading strategy framework
 
 ---
 
+## Quick Start
+
+### 1 — Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 2 — Fetch data from FRED (one-time setup, ~30 seconds)
+```bash
+export FRED_API_KEY=your_key_here      # only needed for this step
+python scripts/update_data.py
+```
+This writes `data/fred_raw.parquet` (all 19 FRED series, 2000–today, ~170 KB).  
+**After this step, no API key or network access is required for anything else.**
+
+### 3 — Run the dashboard (fully offline)
+```bash
+python dashboard.py
+# Open http://127.0.0.1:8050
+```
+
+### Refresh data when needed
+```bash
+export FRED_API_KEY=your_key_here
+python scripts/update_data.py
+```
+Run weekly or before any analysis session to pull the latest FRED releases.
+
+---
+
+## Architecture
+
+```
+scripts/update_data.py   ← ONLY file that needs FRED_API_KEY
+        │
+        ▼ writes
+data/fred_raw.parquet    ← wide DataFrame, 19 cols, daily index, ~170 KB
+        │
+        ▼ read by
+loaders.py               ← ParquetLoader (default) / FredLoader / SeriesLoader ABC
+        │
+        ├──▶ regime_classifier.py   (no fredapi, no network)
+        └──▶ dashboard.py           (no fredapi, no network)
+```
+
+### Loader classes (`loaders.py`)
+
+| Class | Network | API key | Use case |
+|---|---|---|---|
+| `ParquetLoader` | No | No | Default — reads `data/fred_raw.parquet` |
+| `FredLoader` | Yes | Yes | Live refresh in `scripts/update_data.py` |
+| `MacroDataLoader()` | Auto | Auto | Legacy alias — returns ParquetLoader if parquet exists |
+
+All three expose the same interface: `get()`, `as_of()`, `yoy()`, `mom_change()`, `rolling_percentile()`.
+
+---
+
 ## Project Overview
 
 This is **Phase 1** of a multi-phase systematic macro trading system:

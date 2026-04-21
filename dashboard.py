@@ -11,7 +11,7 @@ Features:
   - 8 key metric cards with signal coloring
   - Growth score vs inflation score history chart (regime-shaded)
   - Regime history timeline
-  - All data pulled live from FRED on load (cached for 24h)
+  - Fully offline — reads from data/fred_raw.parquet (run scripts/update_data.py to refresh)
 """
 
 import os
@@ -28,12 +28,13 @@ import dash
 from dash import dcc, html, Input, Output, callback
 import dash_bootstrap_components as dbc
 
-# ── Import our classifier ─────────────────────────────────────────────────────
-from regime_classifier import MacroDataLoader, RegimeClassifier, FRED_API_KEY
+# ── Import our classifier (fully offline — no fredapi, no API key) ──────────
+from loaders import ParquetLoader
+from regime_classifier import RegimeClassifier
 
 # ── Pre-load data once at startup ─────────────────────────────────────────────
-print("Loading FRED data... (this takes ~30 seconds on first run)")
-loader = MacroDataLoader(api_key=FRED_API_KEY, start='1999-01-01')
+print("Loading data from parquet cache...")
+loader = ParquetLoader()
 loader.load_all()
 classifier = RegimeClassifier(loader)
 
